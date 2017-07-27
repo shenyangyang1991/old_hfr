@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="cn" class="white">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>
+		嗨范儿
+	</title>
+	<link rel="stylesheet" type="text/css" href="./css/download.css">
+	<link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
+	<style>
+.tuij {
+	padding-top: 15px!important;
+}
+.tuij .ctxx {
+	padding: 5px 0 0 0!important;
+}
+
+.tuij .ctxx > div {
+	background: #ffd632;
+}
+		.video-js {
+            width: 100%!important;
+            height: 100%!important;
+						background: #ffd632!important;
+        }
+
+				.video {
+					background: #ffd632!important;
+				}
+
+				header .title>.wrapper {
+					margin-bottom: 0!important;
+				}
+
+				.follown {
+					float: right;
+					display: block;
+					height: 34px;
+					width: 91px;
+					background: url(./img/nfollow.png) no-repeat center 6px;
+					background-size: 75px 28px;
+				}
+
+				header .title>.wrapper {
+					border: none!important;
+				}
+
+				header .title .info img {
+					width: 44px;
+					height: 44px;
+				}
+
+				header .title .info a {
+					padding-left: 60px;
+				}
+	</style>
+</head>
+<body>
+
+	<div class="pd_body">
+		<header>
+			<div class="container">
+
+				<div class="video">
+
+				</div>
+				<div class="title">
+					<!-- <div class="desc"></div> -->
+					<div class="wrapper">
+						<div class="info">
+
+						</div>
+						<!-- <div class="like">
+							<i></i>
+							<span></span>
+						</div> -->
+
+						<a class="follown" href="http://www.highfaner.com">
+
+						</a>
+					</div>
+				</div>
+
+				<div class="self">
+					<div class="tipse">
+						他的作品
+					</div>
+					<div class="selfcontain">
+
+					</div>
+
+
+				</div>
+			</div>
+
+		</header>
+		<main>
+			<!--<div class="famous">
+				<div class="tip">
+					热门达人
+				</div>
+				<div class="ctxx">
+
+				</div>
+								<div class="self">
+									<div class="tipse">
+										他的作品
+									</div>
+			</div>-->
+			<div class="tuij self">
+				<div class="tipse">
+					每日精选
+				</div>
+
+				<div class="ctxx">
+
+				</div>
+			</div>
+
+		</main>
+		<footer>
+			<img src="img/logo-m3.png">
+			<div class="wrapper">
+				<div class="tis">嗨范儿&nbsp;&nbsp;|&nbsp;&nbsp;让你更有范儿</div>
+
+			</div>
+			<div class="download_new">
+				<a href="http://www.highfaner.com/" target="_blank">快来摸我</a>
+			</div>
+		</footer>
+		<div class="fn-p10">
+			<div class="boxhf foots">
+			     <a href="http://www.highfaner.com/">没嗨够吗·打开「嗨范儿」看更多精彩内容吧！</a>
+		  </div>
+		</div>
+
+	</div>
+
+
+
+
+</body>
+	<script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r!=null) return (r[2]); return null;
+        }
+		  function defailt(id,tk){
+            location.href = 'share_v3.html?id='+id+"&t="+ true+"&_tk="+tk;
+        }
+		var _w = document.documentElement.clientWidth;
+		var _h = document.querySelector('header>.container>.video');
+		var h = (document.documentElement.clientWidth - 20)/(712/123);
+		var hs = (document.documentElement.clientWidth)/(710/400);
+		var ts = GetQueryString('t');
+		if(ts == "true") {
+			_h.style.height = hs + 'px';
+
+		}else{
+
+
+		}
+
+
+		var _id = GetQueryString('id');
+		var _tk = GetQueryString('_tk');
+
+		var param = {
+			video_id : _id,
+			url: 'video'
+		}
+
+		$.post('./php1/index.php',param,function(data){
+			if(data&&data.code=='1'){
+				var info = data.data;
+				$('.title .desc').text(info.title);
+				$('.title .like span').text(info.like_num);
+				var self = '<a href="javascript:void();"><img src="'+info.user_face+'"></a>'+
+						'<a href="javascript:void();" style="padding-top: 3px;"><span style="font-size:18px;">'+info.user_nickname+'</span></a>' +
+						'<a href="javascript:void();"><b>嗨范儿ID：'+info.user_id+'</b></a>';
+						document.querySelector('.title .info').innerHTML = self;
+				$('.video').append('<video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" poster="'+info.img_url+'"><source src="'+info.video_url+'" type="video/mp4" /></video>');
+
+				videojs("example_video_1", {}, function(){
+					// Player (this) is initialized and ready.
+				});
+			}else{
+				alert('网络出错，重试！');
+			}
+		});
+
+		var param1 = {
+			url: 'user_vidoes',
+			page: '1',
+			rows: '3',
+			user_id: _tk
+		}
+
+		var win = document.documentElement.clientWidth - 20;
+		var w = (win / 3);
+		$.post('./php1/index.php',param1,function(data){
+			if(data&&data.code=='1'){
+				var info = data.data.list;
+				for(var i = 0; i < info.length; i ++){
+					var tss = '<div class="selfit" style="width: '+w+'px;height:'+w+'px;background:url('+info[i].img_url+') no-repeat 0 0;background-size: '+w + 'px '+w+'px;'+'"><a style="width: '+w+'px;height:'+w+'px;" href="javascript:defailt('+info[i].video_id+','+info[i].user_id+');" class="itt"></a></div>'
+					$('.selfcontain').append(tss);
+				}
+			}else{
+				alert('网络出错，重试！');
+			}
+		});
+		var param2 = {
+			url: 'pgc',
+			label_id: '6',
+			rows: '3'
+		}
+
+
+		$.post('./php1/index.php',param2,function(data){
+			if(data&&data.code=='1'){
+				var info = data.data.list;
+				for(var i = 0; i < info.length; i ++){
+					var t = '<div><a href="javascript:defailt('+info[i].video_id+','+info[i].user_id+');"><div class="desc" style="height:'+h+'px;background:url(./img/aly.png) no-repeat 0 0;    background-size: cover;"><h3 style="margin-top: '+((h-44)/2)+'px;">'+info[i].title+'</h3><p><span>'+info[i].user_nickname+'</span> / <span>'+info[i].look_num+'次播放</span></p></div><img src="'+info[i].img_url+'"><div class="playsss"></div></a></div>';
+					$('.tuij .ctxx').append(t);
+				}
+			}else{
+				alert('网络出错，重试！');
+			}
+		});
+
+
+
+
+
+
+	</script>
+</html>

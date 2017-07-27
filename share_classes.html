@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="cn" class="white">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>
+		嗨范儿
+	</title>
+	<link rel="stylesheet" type="text/css" href="./css/download.css">
+	<link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
+	<style>
+.tuij {
+	padding-top: 15px!important;
+}
+.tuij .ctxx {
+	padding: 5px 0 0 0!important;
+}
+
+.tuij .ctxx > div {
+	background: #ffd632;
+}
+		.video-js {
+            width: 100%!important;
+            height: 100%!important;
+						background: #ffd632!important;
+        }
+
+				.video {
+					background: #ffd632!important;
+				}
+
+				header .title>.wrapper {
+					margin-bottom: 0!important;
+				}
+
+				.follown {
+					float: right;
+					display: block;
+					height: 34px;
+					width: 91px;
+					background: url(./img/nfollow.png) no-repeat center 6px;
+					background-size: 75px 28px;
+				}
+
+				header .title>.wrapper {
+					border: none!important;
+				}
+
+				header .title .info img {
+					width: 44px;
+					height: 44px;
+				}
+
+				header .title .info a {
+					padding-left: 60px;
+				}
+        .pd_body {
+          padding-bottom: 50px;
+        }
+	</style>
+</head>
+<body>
+
+	<div class="pd_body">
+		<header>
+			<div class="container">
+
+				<div class="video">
+
+				</div>
+				<div class="title">
+					<div class="conttt">
+            <div class="h"></div>
+            <div class="c"></div>
+          </div>
+
+				</div>
+			</div>
+
+		</header>
+		<main>
+			<div class="classes">
+
+				<div class="ctxx">
+
+				</div>
+			</div>
+
+		</main>
+		<footer>
+			<img src="img/logo-m3.png">
+			<div class="wrapper">
+				<div class="tis">嗨范儿&nbsp;&nbsp;|&nbsp;&nbsp;不止教你舞蹈</div>
+
+			</div>
+			<div class="download_new">
+				<a href="http://www.highfaner.com/" target="_blank">立即学习</a>
+			</div>
+		</footer>
+
+		<div class="learns">
+			<a href="http://www.highfaner.com/"></a>
+		</div>
+		<script type="text/javascript">
+			var ws = document.documentElement.clientWidth || document.body.clientWidth;
+			var ls = document.querySelector('.learns');
+			var lsa = document.querySelector('.learns a');
+			ls.style.height = (ws / 6.94) + 'px';
+			lsa.style.height = (ws / 6.94) + 'px';
+		</script>
+
+	</div>
+
+
+
+
+</body>
+	<script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		function GetQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r!=null) return (r[2]); return null;
+    }
+		var _w = document.documentElement.clientWidth;
+		var _id = GetQueryString('id');
+
+
+		var param1 = {
+			url: 'classes',
+			curriculum_id: _id
+		}
+
+		var win = document.documentElement.clientWidth - 20 - 138 - 16;
+		$.post('./php1/index.php',param1,function(data){
+			if(data&&data.code=='1'){
+				var info = data.data;
+
+        $('.conttt .h').text('我正在学：'+info.title);
+        $('.conttt .c').text(info.info);
+
+        $('.video').append('<video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" poster="'+info.img_url+'"><source src="'+info.video_url+'" type="video/mp4" /></video>');
+
+        videojs("example_video_1", {}, function(){
+          // Player (this) is initialized and ready.
+        });
+        var lsi = info.curriculum_video_list;
+				for(var i = 0; i < lsi.length; i ++){
+					var tss = '<a class="citems" href="http://www.highfaner.com"><div class="pol"><img src="'+lsi[i].img_url+'" /></div><div class="descss" style="width: '+win+'px;"><div class="hh">'+lsi[i].title+'</div><div class="ss"><span>'+lsi[i].study_num+'</span>&nbsp;&nbsp;正在学习</div></div></a>'
+					$('.classes .ctxx').append(tss);
+				}
+			}else{
+				alert('网络出错，重试！');
+			}
+		});
+
+
+
+
+
+
+	</script>
+</html>

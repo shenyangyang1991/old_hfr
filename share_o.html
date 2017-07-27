@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="cn">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>
+		嗨范儿
+	</title>
+	<link rel="stylesheet" type="text/css" href="./css/download.css">
+	<link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
+	<style>
+
+		.video-js {
+            width: 100%!important;
+            height: 100%!important;
+        }
+	</style>
+</head>
+<body>
+
+	<div class="pd_body">
+		<header id="hdr">
+			<div class="container">
+				
+					<div class="people">
+						<div class="photo">
+							<img src="" alt="" />
+						</div>
+						<h3></h3>
+						<p></p>
+						<div class="descs">
+							<span>粉丝：<span class="fans"></span></span>
+							<span>关注：<span class="follow"></span></span>
+							<span style="padding: 0;">ID：<span class="ids" style="padding: 0;"></span></span>
+						</div>
+					</div>
+	
+			</div>
+
+		</header>
+		<main>
+			<!--<div class="famous">
+				<div class="tip">
+					热门达人
+				</div>
+				<div class="ctxx">
+					
+				</div>
+			</div>-->
+			<div class="tuij">
+				
+
+				<div class="ctxx">
+					
+				</div>
+			</div>
+
+		</main>
+		<footer>
+			<img src="img/logo-m3.png">
+			<div class="wrapper">
+				<div class="ti">嗨范儿</div>
+				<div class="sc">年轻人的潮流运动视频社区</div>
+			</div>
+			<div class="download">
+				<a href="http://www.highfaner.com/" target="_blank">立即关注</a>
+			</div>
+		</footer>
+		<div class="fn-p10">
+			<div class="boxhf">
+			<a href="http://www.highfaner.com/">更多精彩视频尽在嗨起来才有范儿的嗨范儿APP</a>
+		</div>
+		</div>
+		
+	</div>	
+		
+
+
+	
+</body>
+	<script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		function GetQueryString(name) { 
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"); 
+            var r = window.location.search.substr(1).match(reg);
+            if (r!=null) return (r[2]); return null; 
+        }
+		  function defailt(id){
+            location.href = 'sharev2.html?id='+id;
+        }
+		var _w = document.documentElement.clientWidth;
+		var _h = document.querySelector('header>.container>.video');
+		var h = (document.documentElement.clientWidth - 20)/(712/123);
+		var wh = (document.documentElement.clientWidth - 20);
+		var hw = (document.documentElement.clientWidth - 20)/(712/400);
+		var hs = (document.documentElement.clientWidth)/(710/400);
+		document.querySelector('header .container').style.height = hs + 'px';
+		var _hshs = (hs-156)/2;
+		$('.people').css('padding-top',_hshs);
+		var _id = GetQueryString('id');
+		var _token =  GetQueryString('_t');
+		var param = {
+			user_id : _id,
+			token: _token,
+			url: 'info'
+		}
+		
+		$.post('./php1/index.php',param,function(data){
+			if(data&&data.code=='1'){
+				var info = data.data;
+				$('.photo img').attr('src',info.face_url);
+				$('.people h3').text(info.nickname);
+				$('.people p').text(info.autograph);
+				$('.people .fans').text(info.fans_num);
+				$('.people .ids').text(info.user_id);
+				$('.people .follow').text(info.follow_num);
+			}else{
+				alert('网络出错，重试！');
+			}
+		});
+
+//		var param1 = {
+//			url: 'people',
+//			page: '1',
+//			rows: '4'
+//		}
+//
+//		var win = document.documentElement.clientWidth - 20;
+//		var w = (win / 3);
+//		$.post('./php1/index.php',param1,function(data){
+//			if(data&&data.code=='1'){
+//				var info = data.data.list;
+//				for(var i = 0; i < info.length; i ++){
+//					var t = '<div style="width:'+w+'px;box-sizing:border-box;padding: 0 10px;"><a href="javascript:void();"><img style="width:'+(w-20)+'px;height:'+(w-20)+'px;" src="'+info[i].face_url+'"><i></i></a><a href="javascript:void();"><span>'+info[i].nickname+'</span></a></div>';
+//					$('.famous .ctxx').append(t);	
+//				}
+//			}else{
+//				alert('网络出错，重试！');
+//			}
+//		});
+		var param2 = {
+			url: 'user_vidoes',
+			user_id:  _id,
+			rows: '3'
+		}
+		
+		
+		$.post('./php1/index.php',param2,function(data){
+			if(data&&data.code=='1'){
+				var info = data.data.list;
+				for(var i = 0; i < info.length; i ++){
+					var t = '<div style="width: '+wh+'px;height: auto;"><a href="javascript:defailt('+info[i].video_id+');"><div class="desc" style="height:'+h+'px;background:url(./img/aly.png) no-repeat 0 0;background-size: 100% 100%;"><h3 style="margin-top: '+((h-44)/2)+'px;">'+info[i].title+'</h3><p><span>'+info[i].user_nickname+'</span> / <span>'+info[i].look_num+'次播放</span></p></div><img style="width: '+wh+'px;height: auto;" src="'+info[i].img_url+'"></a></div>';
+					$('.tuij .ctxx').append(t);	
+				}
+			}else{
+				alert('网络出错，重试！');
+			}
+		});
+
+
+		
+
+
+
+	</script>
+</html>
